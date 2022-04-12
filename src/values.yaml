@@ -8,11 +8,11 @@ namespace: code
 
 image:
   repository: images.captainjustin.space/ubuntu-ssh
-  pullPolicy: IfNotPresent
+  pullPolicy: Always
   # Overrides the image tag whose default is the chart appVersion.
   tag: ""
 
-ubuntuVersion: "1"
+ubuntuVersion: "2"
 
 
 

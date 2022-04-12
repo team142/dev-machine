@@ -24,11 +24,23 @@ RUN echo "user	ALL=(ALL:ALL) ALL" >> /etc/sudoers
 RUN service ssh start
 
 FROM layer5 as layer6
+RUN apt-fast install curl git mercurial make binutils bison gcc build-essential -y
+
+# Install Go
+RUN aria2c https://go.dev/dl/go1.18.linux-amd64.tar.gz
+RUN rm -rf /usr/local/go && tar -C /usr/local -xzf go1.18.linux-amd64.tar.gz
+RUN rm go1.18.linux-amd64.tar.gz
+RUN export PATH=$PATH:/usr/local/go/bin
+
+#Install ZSH
+RUN apt-fast install build-essential curl file git -y
+
+
+RUN sudo apt-get install zsh -y -q
+RUN sudo apt-fast install git-core curl fonts-powerline -y -q
+
 USER user
-RUN sh -c "$(curl -fsSL https://raw.github.com/ohmyzsh/ohmyzsh/master/tools/install.sh)"
 
-
-RUN bash < <(curl -s -S -L https://raw.githubusercontent.com/moovweb/gvm/master/binscripts/gvm-installer)
 # NVM
 
 EXPOSE 22
