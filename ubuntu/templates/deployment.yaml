@@ -9,6 +9,11 @@ spec:
   {{- if not .Values.autoscaling.enabled }}
   replicas: {{ .Values.replicaCount }}
   {{- end }}
+  strategy:
+    type: Recreate
+    rollingUpdate:
+      maxSurge: 0
+      maxUnavailable: 1
   selector:
     matchLabels:
       {{- include "ubuntu.selectorLabels" . | nindent 6 }}
@@ -30,6 +35,9 @@ spec:
         {{- toYaml .Values.podSecurityContext | nindent 8 }}
       containers:
         - name: {{ .Chart.Name }}
+          volumeMounts:
+            - mountPath: /home/user/
+              name: {{ include "ubuntu.fullname" . }}
           command:
             - "/usr/sbin/sshd"
             - "-D"
@@ -65,4 +73,8 @@ spec:
       tolerations:
         {{- toYaml . | nindent 8 }}
       {{- end }}
+      volumes:
+        - name: {{ include "ubuntu.fullname" . }}
+          persistentVolumeClaim:
+            claimName: {{ include "ubuntu.fullname" . }}
   revisionHistoryLimit: 1
