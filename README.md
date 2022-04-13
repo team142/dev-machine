@@ -17,8 +17,12 @@ At the moment you need to have docker, k8 is optional but recommended.
 
 ## Docker
 
-`docker build dev-machine:1 .`
-`docker run -p 8022:22 dev-machine:1`
+
+```
+cd src
+docker build dev-machine:1 .
+docker run -p 8022:22 dev-machine:1
+```
 
 If you want to customize the zsh / keep history
 Mount a directory to /home/user/userfiles
